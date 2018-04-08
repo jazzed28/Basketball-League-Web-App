@@ -10,3 +10,4 @@ Do the research on similar react app using login functionalitiy.
 
 At first, I need to set up database structure. And using mock up tools like Sketch/Balsamiq Mockups I can do prototyping and planning out what I should do next.
 
+After some research there will be limitation on using mangoDB as a main database. It should be more schemed well before starting this work.
