@@ -13,3 +13,16 @@ At first, I need to set up database structure. And using mock up tools like Sket
 After some research there will be limitation on using mangoDB as a main database. It should be more schemed well before starting this work.
 
 After watching youtube preparation for web projects I should follow guidelines to make mockups and things using mockup tools.
+
+1. DATA
+
+FIELDS | TYPES
+---------------
+Number | Number
+Firstname | String
+Lastname | String
+Email | String
+Mobile | Number
+Note | String
+
+2. REST APIs - GET, POST, PUT, DELETE
