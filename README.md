@@ -25,4 +25,10 @@ Email | String
 Mobile | Number
 Note | String
 
+Player (Player_ID, Team_ID, Number, Firstname, Lastname, Email, Mobile, Note)
+
+Team (Team_ID, User_ID, TeamName)
+
+User (User_ID, Username, Email)
+
 2. REST APIs - GET, POST, PUT, DELETE
