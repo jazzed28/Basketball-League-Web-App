@@ -32,3 +32,13 @@ Team (Team_ID, User_ID, TeamName)
 User (User_ID, Username, Email)
 
 2. REST APIs - GET, POST, PUT, DELETE
+
+Basic APIs for create, update, delete player's data
+
+GET: /api/rosters/:team - get team's roster and players' data
+GET: /api/rosters/:team/:player - get player's data
+POST: /api/rosters/:team/:player - create a player for a specific team
+PUT: /api/rosters/:team/:player - update a player's data
+DELETE: /api/rosters/:team/:player - delete a player's data
+
+
