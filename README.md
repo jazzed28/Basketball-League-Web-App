@@ -42,3 +42,5 @@ PUT: /api/rosters/:team/:player - update a player's data
 DELETE: /api/rosters/:team/:player - delete a player's data
 
 3. MONGODB SETUP
+
+With Heroku
