@@ -45,3 +45,5 @@ DELETE: /api/rosters/:team/:player - delete a player's data
 
 With Heroku
 Built starter package with Webpack 4
+
+4. Webpack 4 starter setup
