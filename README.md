@@ -48,4 +48,5 @@ Built starter package with Webpack 4
 
 4. Webpack 4 starter setup
 
+It will be server-side API app
 
