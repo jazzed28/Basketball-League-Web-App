@@ -99,8 +99,15 @@ app.post('/api/rosters/new', (req, res) => {
         mobile: mobile,
         note: note
     }
-    players.push(newPlayer);
-    res.redirect('/api');
+    Player.create(newPlayer, (err, createdPlayer) => {
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Player created!");
+            res.redirect('/api');
+        }
+    })
+    // players.push(newPlayer);
 })
 
 app.listen(port, process.env.IP, () => {
