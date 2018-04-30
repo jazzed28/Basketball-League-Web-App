@@ -84,6 +84,16 @@ app.get('/api/rosters/new', (req, res) => {
     res.render("form");
 })
 
+app.get('/api/rosters/:id', (req, res) => {
+    Player.findById(req.params.id, (err, foundPlayer) => {
+        if(err){
+            console.log(err);
+        } else {
+            res.render("show", {player: foundPlayer});
+        }
+    })
+})
+
 app.post('/api/rosters/new', (req, res) => {
     let fullname = req.body.fullname;
     let firstname = req.body.firstname;
