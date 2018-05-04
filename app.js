@@ -117,7 +117,6 @@ app.post('/api/rosters/new', (req, res) => {
             res.redirect('/api');
         }
     })
-    // players.push(newPlayer);
 })
 
 app.listen(port, process.env.IP, () => {
