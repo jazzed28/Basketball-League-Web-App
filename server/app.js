@@ -2,12 +2,16 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 var mongoose = require('mongoose');
+var expressSanitizer = require('express-sanitizer');
 
 mongoose.connect("mongodb://localhost/players");
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
+app.use(expressSanitizer());
+app.use(methodOverride('_method'));
 
 var playerSchema = new mongoose.Schema({
     fullname: String,
@@ -95,25 +99,44 @@ app.get('/api/rosters/:id', (req, res) => {
 })
 
 app.post('/api/rosters/new', (req, res) => {
-    let fullname = req.body.fullname;
-    let firstname = req.body.firstname;
-    let lastname = req.body.lastname;
-    let email = req.body.email;
-    let mobile = req.body.mobile;
-    let note = req.body.note;
-    let newPlayer = { 
-        fullname: fullname,
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        mobile: mobile,
-        note: note
-    }
-    Player.create(newPlayer, (err, createdPlayer) => {
+    req.body.sanitized = req.sanitize(req.body.player.body);
+    Player.create(req.body.sanitized, (err, createdPlayer) => {
         if(err){
             console.log(err);
         } else {
             console.log("Player created!");
+            res.redirect('/api');
+        }
+    })
+})
+
+app.get('/api/rosters/:id/edit', (req, res) => {
+    Player.findById(req.params.id, (err, foundPlayer) => {
+        if(err) {
+            res.redirect('/api');
+        } else {
+            res.render("edit", {player: foundPlayer});
+        }
+    })
+})
+
+app.put('/api/rosters/:id', (req, res) => {
+    req.body.sanitized = req.sanitize(req.body.player.body);
+    Player.findByIdAndUpdate(req.params.id, req.body.sanitized, (err, updatedPlayer) => {
+        if(err){
+            res.redirect('/api');
+        } else {
+            res.redirect('/api/rosters/' + req.params.id)
+        }
+    })
+})
+
+app.delete('/api/rosters/:id', (req, res) => {
+    Player.findByIdAndRemove(req.params.id, (err) => {
+        if(err) {
+            res.redirect('/api');
+        } else {
+            consolo.log("Player deleted");
             res.redirect('/api');
         }
     })
