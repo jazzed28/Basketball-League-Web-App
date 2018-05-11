@@ -22,14 +22,13 @@ Number | Number
 Firstname | String
 Lastname | String
 Email | String
-Mobile | Number
-Note | String
+Mobile | String
 
-Player (Player_ID, Team_ID, Number, Firstname, Lastname, Email, Mobile, Note)
+Player (Player_ID, Number, Firstname, Lastname, Email, Mobile, Note)
 
-Team (Team_ID, User_ID, TeamName)
+Team (Team_ID, User_Ref, roster[Player], TeamName)
 
-User (User_ID, Username, Email)
+User (User_ID, Team_Ref, Username, Email, Password)
 
 2. REST APIs - GET, POST, PUT, DELETE
 

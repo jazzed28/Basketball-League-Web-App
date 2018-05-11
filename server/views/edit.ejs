@@ -1,11 +1,10 @@
 <h1>Edit <%= player.fullname %></h1>
 
 <form action="/api/rosters/<%= player._id %>?_method=PUT", method="POST">
-    <input type="text" name="player[fullname]" value="<%= player.fullname %>">
+    <input type="number" name="player[number]" value="<%= player.number %>">
     <input type="text" name="player[firstname]" value="<%= player.firstname %>">
     <input type="text" name="player[lastname]" value="<%= player.lastname %>">
     <input type="text" name="player[email]" value="<%= player.email %>">
     <input type="text" name="player[mobile]" value="<%= player.mobile %>">
-    <input type="text" name="player[note]" value="<%= player.note %>">
     <button>Submit!</button>
 </form>

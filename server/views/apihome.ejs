@@ -2,12 +2,11 @@
 
 <% players.forEach((player) => { %>
     <li>
-        <h4><%= player.fullname %></h4>
+        <h4><%= player.number %></h4>
         <h4><%= player.firstname %></h4>
         <h4><%= player.lastname %></h4>
         <h4><%= player.email %></h4>
         <h4><%= player.mobile %></h4>
-        <h4><%= player.note %></h4>
         <a href="/api/rosters/<%= player._id %>" class="btn btn-primary">More Details</a>
         <a href="/api/rosters/<%= player._id %>/edit" class="btn btn-primary">Edit</a>
         <form action="/api/rosters/<%= player._id %>?_method=DELETE" method="POST">
