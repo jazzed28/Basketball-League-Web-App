@@ -4,9 +4,12 @@ var uniqueValidator = require('mongoose-unique-validator');
 var TeamSchema = new mongoose.Schema({
     teamname: String,
     note: String,
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+    author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
     },
     roster: [
         {

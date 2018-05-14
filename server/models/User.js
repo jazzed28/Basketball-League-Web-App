@@ -2,6 +2,7 @@ var mongoose = require('moongose');
 var uniqueValidator = require('mongoose-unique-validator');
 
 var UserSchema = new mongoose.Schema({
+    username: String,
     email: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true},
     password: String,
     team: {

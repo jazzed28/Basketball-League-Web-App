@@ -11,12 +11,13 @@ var seedDB = require('./seeds');
 // Remove all players and seed players
 seedDB();
 
-mongoose.connect("mongodb://localhost/players");
+mongoose.connect("mongodb://localhost/bball");
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(expressSanitizer());
 
 app.set('view engine', 'ejs');
+app.use('/src',express.static(__dirname + "/src"));
 app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {

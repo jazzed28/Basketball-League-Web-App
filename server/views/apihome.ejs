@@ -1,3 +1,5 @@
+<% include partials/header %>
+
 <h1>api home</h1>
 
 <% players.forEach((player) => { %>
@@ -7,11 +9,13 @@
         <h4><%= player.lastname %></h4>
         <h4><%= player.email %></h4>
         <h4><%= player.mobile %></h4>
-        <a href="/api/rosters/<%= player._id %>" class="btn btn-primary">More Details</a>
-        <a href="/api/rosters/<%= player._id %>/edit" class="btn btn-primary">Edit</a>
+        <a href="/api/rosters/<%= player._id %>" class="btn">More Details</a>
+        <a href="/api/rosters/<%= player._id %>/edit" class="btn">Edit</a>
         <form action="/api/rosters/<%= player._id %>?_method=DELETE" method="POST">
-            <button class="btn">Delete</button>
+            <button class="btn btn-large">Delete</button>
         </form>
     </li>
 
 <% }); %>
+
+<% include partials/footer %>
