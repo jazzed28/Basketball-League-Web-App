@@ -116,31 +116,32 @@ function seedDB(){
         }
         console.log("players removed successfully!");
     });
-    Team.create(teamData, (err, createdTeam) => {
+    var newTeam = new Team(teamData);
+    rosterData.forEach((eachPlayer) => {
+        let newPlayer = new Player(eachPlayer);
+        newPlayer.save((err, savedPlayer) => {
+            if(err) {
+                console.log(err);
+            } else {
+                console.log("Saved Player: " + savedPlayer);
+            }
+        })
+        newTeam.players.push(newPlayer);
+    })
+    newTeam.save((err, savedTeam) => {
         if(err) {
             console.log(err);
         } else {
-            console.log("Team created!");
-            console.log(createdTeam);
-            rosterData.forEach((eachPlayer) => {
-                Player.create(eachPlayer, (err, createdPlayer) => {
-                    if(err) {
-                            console.log(err);
-                    } else {
-                        console.log("Added player");
-                        createdTeam.players.push(createdPlayer);
-                        createdTeam.save((err, savedTeam) => {
-                            if(err) {
-                                console.log(err);
-                            } else {
-                                console.log("Saved:" + savedTeam);
-                            }
-                        });
-                    }
-                })
-            })
+            console.log("Saved Team: " + savedTeam);
         }
-    })
+    });
+    // createdTeam.save((err, savedTeam) => {
+    //     if(err) {
+    //         console.log(err);
+    //     } else {
+    //         console.log("Saved Team: " + savedTeam);
+    //     }
+    // });
         // rosterData.forEach((seed) => {
         //     Player.create(
         //         seed, (err, createdPlayer) => {
