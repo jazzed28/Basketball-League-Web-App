@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var expressSanitizer = require('express-sanitizer');
+var User = require('./models/User');
+var Team = require('./models/Team');
 var Player = require('./models/Player');
 var seedDB = require('./seeds');
 
@@ -25,15 +27,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-    Player.find({}, (err, allplayers) => {
+    Team.findOne({teamname: "OBAR"}, (err, foundTeam) => {
         if(err){
             console.log(err);
         } else {
-            console.log("Players found");
-            res.render("apihome", {players: allplayers});
+            console.log("Team found");
+            res.render("apihome", {team: foundTeam});
         }
     })
-    // res.render("apihome", {players: players});
 })
 
 app.get('/api/rosters/new', (req, res) => {

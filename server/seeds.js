@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
+var Team = require('./models/Team');
 var Player = require('./models/Player');
+var User = require('./models/User');
 
-var playerData = [
+var rosterData = [
     {
         number: "2",
         firstname: "Peter",
         lastname: "Son",
-        email: "email@gmail.com",
+        email: "email1@gmail.com",
         mobile: "0213892833",
-        note: "This is a note"
     },
     {
         number: "5",
@@ -16,7 +17,6 @@ var playerData = [
         lastname: "Wang",
         email: "email2@gmail.com",
         mobile: "021123492833",
-        note: "This is a note2"
     },
     {
         number: "6",
@@ -24,29 +24,135 @@ var playerData = [
         lastname: "Ju",
         email: "email3@gmail.com",
         mobile: "021389232",
-        note: "This is a note3"
+    },
+    {
+        number: "1",
+        firstname: "Jin",
+        lastname: "Doj",
+        email: "email4@gmail.com",
+        mobile: "2342434",
+    },
+    {
+        number: "3",
+        firstname: "Derek",
+        lastname: "Pin",
+        email: "email5@gmail.com",
+        mobile: "234523",
+    },
+    {
+        number: "4",
+        firstname: "Wan",
+        lastname: "Todi",
+        email: "email6@gmail.com",
+        mobile: "213415",
+    },{
+        number: "7",
+        firstname: "Won",
+        lastname: "Bay",
+        email: "emai7@gmail.com",
+        mobile: "3765",
+    },
+    {
+        number: "8",
+        firstname: "Create",
+        lastname: "Fj",
+        email: "email8@gmail.com",
+        mobile: "345635346",
+    },
+    {
+        number: "9",
+        firstname: "Doli",
+        lastname: "Nemo",
+        email: "email9@gmail.com",
+        mobile: "456546",
+    },
+    {
+        number: "10",
+        firstname: "Pop",
+        lastname: "Culture",
+        email: "emai10@gmail.com",
+        mobile: "2375646",
+    },
+    {
+        number: "11",
+        firstname: "Thomas",
+        lastname: "Su",
+        email: "email11@gmail.com",
+        mobile: "2345345",
+    },
+    {
+        number: "12",
+        firstname: "John",
+        lastname: "Mand",
+        email: "email12@gmail.com",
+        mobile: "45746",
     }
 ]
 
+var userData = [
+    {
+        username: "bballlover",
+        email: "owner@gmail.com",
+        password: "simple",
+    }
+]
+
+var teamData =
+    {
+        teamname: "OBAR",
+        note: "Hello this is note and we would like to let you know"
+    }
+
 function seedDB(){
+    Team.remove({}, (err) => {
+        if(err) {
+            console.log(err);
+        }
+        console.log("teams removed successfully!");
+    });
     Player.remove({}, (err) => {
         if(err) {
             console.log(err);
         }
-        console.log("removed successfully!");
-        playerData.forEach((seed) => {
-            Player.create(
-                seed, (err, createdPlayer) => {
+        console.log("players removed successfully!");
+    });
+    Team.create(teamData, (err, createdTeam) => {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("Team created!");
+            console.log(createdTeam);
+            rosterData.forEach((eachPlayer) => {
+                Player.create(eachPlayer, (err, createdPlayer) => {
                     if(err) {
-                        console.log(err);
+                            console.log(err);
                     } else {
                         console.log("Added player");
-                        console.log(createdPlayer);
+                        createdTeam.players.push(createdPlayer);
+                        createdTeam.save((err, savedTeam) => {
+                            if(err) {
+                                console.log(err);
+                            } else {
+                                console.log("Saved:" + savedTeam);
+                            }
+                        });
                     }
-                }
-            )
-        })
-    });
+                })
+            })
+        }
+    })
+        // rosterData.forEach((seed) => {
+        //     Player.create(
+        //         seed, (err, createdPlayer) => {
+        //             if(err) {
+        //                 console.log(err);
+        //             } else {
+        //                 console.log("Added player");
+        //                 console.log(createdPlayer);
+        //             }
+        //         }
+        //     )
+        // })
 }
 
 module.exports = seedDB;

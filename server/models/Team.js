@@ -1,22 +1,11 @@
-var mongoose = require('moongose');
+var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
+var Player = require('./Player');
 
 var TeamSchema = new mongoose.Schema({
     teamname: String,
     note: String,
-    author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        username: String
-    },
-    roster: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Player"
-        }
-    ]
+    players: [Player.schema]
 }, { timestamps: true })
 
 TeamSchema.plugin(uniqueValidator, { message: "is already taken." });
