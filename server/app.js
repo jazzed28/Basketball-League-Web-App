@@ -31,18 +31,25 @@ app.get('/api', (req, res) => {
         if(err){
             console.log(err);
         } else {
-            console.log("Team found");
+            console.log(foundTeam.players);
             res.render("apihome", {team: foundTeam});
         }
     })
 })
 
-app.get('/api/rosters/new', (req, res) => {
-    res.render("form");
+app.get('/api/teams/:tid/players/new', (req, res) => {
+    Team.findById(req.params.tid, (err, foundTeam) => {
+        if(err){
+            console.log(err);
+        } else {
+            console.log("Team found");
+            res.render("form", { team: foundTeam });
+        }
+    })
 })
 
-app.get('/api/rosters/:id', (req, res) => {
-    Player.findById(req.params.id, (err, foundPlayer) => {
+app.get('/api/teams/:tid/players/:pid', (req, res) => {
+    Player.findById(req.params.pid, (err, foundPlayer) => {
         if(err){
             console.log(err);
         } else {
@@ -51,7 +58,7 @@ app.get('/api/rosters/:id', (req, res) => {
     })
 })
 
-app.post('/api/rosters/new', (req, res) => {
+app.post('/api/teams/:tid/players/new', (req, res) => {
     Player.create(req.body.player, (err, createdPlayer) => {
         if(err){
             console.log(err);
@@ -62,37 +69,120 @@ app.post('/api/rosters/new', (req, res) => {
     })
 })
 
-app.get('/api/rosters/:id/edit', (req, res) => {
-    Player.findById(req.params.id, (err, foundPlayer) => {
+app.get('/api/teams/:tid/players/:pid/edit', (req, res) => {
+    Player.findById(req.params.pid, (err, foundPlayer) => {
         if(err) {
             res.redirect('/api');
         } else {
-            res.render("edit", {player: foundPlayer});
+            res.render("edit", { player: foundPlayer });
         }
     })
 })
 
-app.put('/api/rosters/:id', (req, res) => {
-    Player.findByIdAndUpdate(req.params.id, req.body.player, (err, updatedPlayer) => {
-        if(err){
+app.put('/api/teams/:tid', (req, res) => {
+    Team.findByIdAndUpdate(req.params.tid, { $set: { "players": req.body.player } }, (err, foundTeam) => {
+        if(err) {
             console.log(err);
-            res.redirect('/api');
         } else {
-            res.redirect('/api/rosters/' + req.params.id)
+            console.log("--------------");
+            console.log(foundTeam.players);
+            // foundTeam.update(req.params.tid, { $set: { "players": "joj" } })
+            // (err, updatedTeam) => {
+            //     if(err) {
+            //         console.log(err);
+            //     } else {
+            //         console.log("Team UPDATED!");
+            //         foundTeam.save((err, savedTeam) => {
+            //             if(err) {
+            //                 console.log(err);
+            //             } else {
+            //                 console.log("Team saved");
+            //             }
+            //         })
+            //     }
+            // })
+
+
+
+
+            // let inputPlayers = req.body.player;
+            // for (var i = 0; i < foundTeam.players.length; i++) {
+            //     console.log("Dang!!!!!!!!");
+            //     console.log(inputPlayers[i]);
+            //     Player.findByIdAndUpdate(foundTeam.players[i]._id, inputPlayers[i], (err, updatedPlayer) => {
+            //         if(err) {
+            //             console.log(err);
+            //         } else {
+            //             console.log("player updated!!!!!!!!");
+            //             console.log(updatedPlayer);
+            //             foundTeam.save((err, savedTeam) => {
+            //                 if(err) {
+            //                     console.log(err);
+            //                 } else {
+            //                     console.log("Team saved");
+            //                 }
+            //             })
+            //         }
+            //     })
+            // }
+
+             res.redirect('/api');
+
+            // inputPlayers.forEach((each) => {
+            //     // Player.findByIdAndUpdate()
+            // })
+            // foundTeam.update({$set: { players: req.body.player }}, (err, updatedTeam) => {
+            //     if(err) {
+            //         console.log(err);
+            //     } else {
+            //         console.log(updatedTeam);
+            //         res.redirect('/api');
+            //     }
+            // })
+            // foundTeam.players.map((eachPlayer, i) => {
+            //     return Object.assign(req.body.player[i]);
+            //     // return Object.assign(req.body.player[i]);
+            // })
+            // foundTeam.save((err, savedTeam) => {
+            //         if(err) {
+            //             console.log(err);
+            //         } else {
+            //             console.log("Team saved");
+            //             res.redirect('/api');
+            //         }
+            //     })
         }
+
+        // foundTeam.players = Object.assign(req.body.player);
+        // foundTeam.save((err, savedTeam) => {
+        //     if(err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log("Team saved");
+        //         res.redirect('/api');
+        //     }
+        // })
+        
+        // console.log(req.body.player);
+        // if(err){
+        //     console.log(err);
+        //     res.redirect('/api');
+        // } else {
+        //     res.redirect('/api/teams/' + req.params.tid + '/players/' + req.params.pid)
+        // }
     })
 })
 
-app.delete('/api/rosters/:id', (req, res) => {
-    Player.findByIdAndRemove(req.params.id, (err) => {
-        if(err) {
-            res.redirect('/api');
-        } else {
-            console.log("Player deleted");
-            res.redirect('/api');
-        }
-    })
-})
+// app.delete('/api/teams/:tid/players/:pid', (req, res) => {
+//     Player.findByIdAndRemove(req.params.pid, (err) => {
+//         if(err) {
+//             res.redirect('/api');
+//         } else {
+//             console.log("Player deleted");
+//             res.redirect('/api');
+//         }
+//     })
+// })
 
 app.listen(port, process.env.IP, () => {
     console.log("Server has started...");

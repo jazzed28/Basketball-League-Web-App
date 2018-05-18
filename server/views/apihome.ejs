@@ -19,34 +19,36 @@
 <div class="container">
   <div class="section">
     <div class="row">
-      <form class="col s12">
-        <% team.players.forEach((player) => { %>
+      <form class="col s12" action="/api/teams/<%= team._id %>?_method=PUT" method="POST">
+        <% let roster = team.players; %>
+        <% for (var i = 0; i < team.players.length; i++) { %>
         <div class="row">
           <div class="input-field col s1">
-            <input id="number" type="number" class="validate" value="<%= player.number %>">
+            <input id="number" type="number" class="validate" name="player[<%=i%>][number]" value="<%= roster[i].number %>">
             <label for="number">No.</label>
           </div>
           <div class="input-field col s2">
-            <input id="first_name" type="text" class="validate" value="<%= player.firstname %>">
+            <input id="first_name" type="text" class="validate" name="player[<%=i%>][firstname]" value="<%= roster[i].firstname %>">
             <label for="first_name">First Name</label>
           </div>
           <div class="input-field col s2">
-            <input id="last_name" type="text" class="validate" value="<%= player.lastname %>">
+            <input id="last_name" type="text" class="validate" name="player[<%=i%>][lastname]" value="<%= roster[i].lastname %>">
             <label for="last_name">Last Name</label>
           </div>
-          <div class="input-field col s5">
-            <input id="email" type="email" class="validate" value="<%= player.email %>">
+          <div class="input-field col s4">
+            <input id="email" type="email" class="validate" name="player[<%=i%>][email]" value="<%= roster[i].email %>">
             <label for="email">Email</label>
           </div>
-          <div class="input-field col s2">
-            <input id="mobile" type="text" class="validate" value="<%= player.mobile %>">
+          <div class="input-field col s3">
+            <input id="mobile" type="text" class="validate" name="player[<%=i%>][mobile]" value="<%= roster[i].mobile %>">
             <label for="mobile">Mobile</label>
           </div>
         </div>
-        <a href="/api/rosters/<%= player._id %>" class="btn">More Details</a>
-        <a href="/api/rosters/<%= player._id %>/edit" class="btn">Edit</a>
-        <a href="/api/rosters/<%= player._id %>?_method=DELETE" class="btn">Delete</a>
-        <% }); %>
+        <!-- <a href="/api/teams/<%= team._id %>/players/<%= /* player._id */ %>/edit" class="btn"> + </a>
+        <a href="/api/teams/<%= team._id %>/players/<%= /* player._id */ %>" class="btn">More Details</a> -->
+        <!-- <a href="/api/teams/<%= team._id %>/players/<%= /* player._id */ %>?_method=DELETE" class="btn">Delete</a> -->
+        <% }; %>
+        <button class="btn">Save</button>
       </form>
     </div>
     <!--   Icon Section   -->

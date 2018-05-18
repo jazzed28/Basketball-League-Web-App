@@ -1,6 +1,6 @@
 <h1>Create New Player</h1>
 
-<form action="/api/rosters/new", method="POST">
+<form action="/api/teams/<%= team._id %>/players/new", method="POST">
     <input type="number" name="player[number]" placeholder="number">
     <input type="text" name="player[firstname]" placeholder="firstname">
     <input type="text" name="player[lastname]" placeholder="lastname">

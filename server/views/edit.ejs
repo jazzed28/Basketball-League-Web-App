@@ -1,10 +1,10 @@
-<h1>Edit <%= player.fullname %></h1>
+<h1>Edit <%= player.firstname %></h1>
 
-<form action="/api/rosters/<%= player._id %>?_method=PUT", method="POST">
+<!-- <form action="/api/teams/<%= /* team._id */ %>/players/<%= player._id %>?_method=PUT" method="POST">
     <input type="number" name="player[number]" value="<%= player.number %>">
     <input type="text" name="player[firstname]" value="<%= player.firstname %>">
     <input type="text" name="player[lastname]" value="<%= player.lastname %>">
     <input type="text" name="player[email]" value="<%= player.email %>">
     <input type="text" name="player[mobile]" value="<%= player.mobile %>">
     <button>Submit!</button>
-</form>
+</form> not working at the moment, need to find a way to get parent's id or add the button on the listing page -->

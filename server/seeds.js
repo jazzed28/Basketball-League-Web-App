@@ -135,25 +135,6 @@ function seedDB(){
             console.log("Saved Team: " + savedTeam);
         }
     });
-    // createdTeam.save((err, savedTeam) => {
-    //     if(err) {
-    //         console.log(err);
-    //     } else {
-    //         console.log("Saved Team: " + savedTeam);
-    //     }
-    // });
-        // rosterData.forEach((seed) => {
-        //     Player.create(
-        //         seed, (err, createdPlayer) => {
-        //             if(err) {
-        //                 console.log(err);
-        //             } else {
-        //                 console.log("Added player");
-        //                 console.log(createdPlayer);
-        //             }
-        //         }
-        //     )
-        // })
 }
 
 module.exports = seedDB;
