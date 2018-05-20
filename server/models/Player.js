@@ -5,7 +5,7 @@ var PlayerSchema = new mongoose.Schema({
     number: Number,
     firstname: String,
     lastname: String,
-    email: { type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
+    email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
     mobile: String,
 }, { timestamps: true })
 
