@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const webpackDashboard = require('webpack-dashboard/plugin');
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -21,5 +22,8 @@ module.exports = {
       }
     ]
   },
-  plugins: [htmlWebpackPlugin]
+  plugins: [
+    htmlWebpackPlugin,
+    new webpackDashboard()
+  ]
 };
