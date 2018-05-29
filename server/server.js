@@ -1,42 +1,52 @@
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 3000;
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-var mongoose = require('mongoose');
-var expressSanitizer = require('express-sanitizer');
-var passport = require('passport');
-var LocalStrategy = require('passport-local');
-var User = require('./models/User');
-var Team = require('./models/Team');
-var Player = require('./models/Player');
-var seedDB = require('./seeds');
+const express = require('express');
+const app = express();
+const logger = require('morgan');
+const port = process.env.PORT || 3000;
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+const MongoStore = require('connect-mongo')(session);
+const expressSanitizer = require('express-sanitizer');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/User');
+const Team = require('./models/Team');
+const Player = require('./models/Player');
+const userRoute = require('./routes/auth')
+const seedDB = require('./seeds');
 
-// Remove all players and seed players
+app.use(logger('dev'));
 
 mongoose.connect("mongodb://localhost/bball");
+
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(expressSanitizer());
 
 app.set('view engine', 'ejs');
 app.use('/src',express.static(__dirname + "/src"));
 app.use(methodOverride('_method'));
 
+// Remove all players and seed players
 seedDB();
 
 // PASSPORT CONFIG
 app.use(require('express-session')({
-    secret: "This is default secret key",
+    secret: "default-secret-key",
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: false,
     saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
+// Routes
+app.use('/user', userRoute)
 
 app.get('/', (req, res) => {
     res.render("landing");
@@ -122,7 +132,7 @@ app.put('/api/teams/:tid', (req, res) => {
 
 
             // let inputPlayers = req.body.player;
-            // for (var i = 0; i < foundTeam.players.length; i++) {
+            // for (const i = 0; i < foundTeam.players.length; i++) {
             //     console.log("Dang!!!!!!!!");
             //     console.log(inputPlayers[i]);
             //     Player.findByIdAndUpdate(foundTeam.players[i]._id, inputPlayers[i], (err, updatedPlayer) => {
@@ -208,7 +218,7 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
     console.log(req.body.username);
-    var newUser = new User(
+    const newUser = new User(
         {
             username: req.body.username,
             email: req.body.email
