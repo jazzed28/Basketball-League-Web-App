@@ -51,14 +51,14 @@ function Header(props) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            Title
+            Basketball
           </Typography>
           <List className={classes.list}>
             <ListItem button className={classes.listItem}>
-              <Button color="inherit">League</Button>
+              <Link to='/league'><Button color="inherit">League</Button></Link>
             </ListItem>
             <ListItem button className={classes.listItem}>
-              <Button color="inherit">Contact</Button>
+            <Link to='/contact'><Button color="inherit">Contact</Button></Link>
             </ListItem>
           </List>
           <Button color="inherit">Login</Button>

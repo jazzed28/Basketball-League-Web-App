@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import CSSBaseline from '@material-ui/core/CssBaseline';
 import { Header, Footer, Pages } from './layouts';
-import { Link, Route, Redirect } from 'react-router-dom';
+import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -28,7 +28,11 @@ export default class extends Component {
         <CSSBaseline />
         <MuiThemeProvider theme={theme}>
           <Header/>
-          <Pages/>
+          <Switch>
+            <Route path='/league' component={Pages} />
+            <Route path='/contact' />
+            <Route exact path='/' render={() => <Redirect to='/league' />} />
+          </Switch>
           <Footer/>
         </MuiThemeProvider>
       </Fragment>

@@ -5,22 +5,38 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var expressSanitizer = require('express-sanitizer');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
 var User = require('./models/User');
 var Team = require('./models/Team');
 var Player = require('./models/Player');
 var seedDB = require('./seeds');
 
 // Remove all players and seed players
-seedDB();
 
 mongoose.connect("mongodb://localhost/bball");
 app.use(bodyParser.urlencoded({extended: true}));
-
+// app.use(bodyParser.json());
 app.use(expressSanitizer());
 
 app.set('view engine', 'ejs');
 app.use('/src',express.static(__dirname + "/src"));
 app.use(methodOverride('_method'));
+
+seedDB();
+
+// PASSPORT CONFIG
+app.use(require('express-session')({
+    secret: "This is default secret key",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.get('/', (req, res) => {
     res.render("landing");
@@ -58,7 +74,7 @@ app.get('/api/teams/:tid/players/:pid', (req, res) => {
     })
 })
 
-app.post('/api/teams/:tid/players/new', (req, res) => {
+app.post('/api/teams/:tid/players/new', isLoggedIn, (req, res) => {
     Player.create(req.body.player, (err, createdPlayer) => {
         if(err){
             console.log(err);
@@ -183,6 +199,53 @@ app.put('/api/teams/:tid', (req, res) => {
 //         }
 //     })
 // })
+
+// AUTH ROUTES
+
+app.get('/register', (req, res) => {
+    res.send("Register");
+})
+
+app.post('/register', (req, res) => {
+    console.log(req.body.username);
+    var newUser = new User(
+        {
+            username: req.body.username,
+            email: req.body.email
+        });
+    User.register(newUser, req.body.password, (err, user) => {
+        if(err){
+            return res.send("register err");
+        }
+        passport.authenticate("local")(req, res, () => {
+            res.send('success registration');
+        });
+    });
+})
+
+app.get('/login', (req, res) => {
+    res.send("Login");
+})
+
+app.post('/login', passport.authenticate("local", 
+    {
+        successRedirect: '/api',
+        failureRedirect: '/login'
+    }), (req, res) => {
+    res.send("Login reached");
+})
+
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/api');
+})
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/login');
+}
 
 app.listen(port, process.env.IP, () => {
     console.log("Server has started...");
