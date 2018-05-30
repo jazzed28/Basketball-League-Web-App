@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const logger = require('morgan');
 const port = process.env.PORT || 3000;
 const session = require('express-session');
@@ -10,7 +11,6 @@ mongoose.Promise = global.Promise;
 const MongoStore = require('connect-mongo')(session);
 const expressSanitizer = require('express-sanitizer');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
 const User = require('./models/User');
 const Team = require('./models/Team');
 const Player = require('./models/Player');
@@ -18,6 +18,7 @@ const userRoute = require('./routes/auth')
 const seedDB = require('./seeds');
 
 app.use(logger('dev'));
+app.use(cors());
 
 mongoose.connect("mongodb://localhost/bball");
 

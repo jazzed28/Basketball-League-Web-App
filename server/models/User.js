@@ -13,15 +13,15 @@ const UserSchema = new mongoose.Schema({
 
 // Define schema methods
 UserSchema.methods = {
-    checkPassword: inputPassword => {
+    checkPassword: function(inputPassword) {
         return bcrypt.compareSync(inputPassword, this.password);
     },
-    hashPassword: textPassword => {
+    hashPassword: function(textPassword) {
         return bcrypt.hashSync(textPassword, 10);
     }
 }
 
-UserSchema.pre('save', next => {
+UserSchema.pre('save', function(next){
     if(!this.password) {
         console.log("models/user ------NO PASSWORD PROVIDED------");
         next();

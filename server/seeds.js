@@ -116,6 +116,12 @@ function seedDB(){
         }
         console.log("players removed successfully!");
     });
+    User.remove({}, (err) => {
+        if(err) {
+            console.log(err);
+        }
+        console.log("users removed successfully!");
+    })
     var newTeam = new Team(teamData);
     rosterData.forEach((eachPlayer) => {
         let newPlayer = new Player(eachPlayer);
@@ -135,6 +141,16 @@ function seedDB(){
             console.log("Saved Team: " + savedTeam);
         }
     });
+    userData.forEach((eachUser) => {
+        var newUser = new User(eachUser);
+        newUser.save((err, savedUser) => {
+            if(err) {
+                console.log(err);
+            } else {
+                console.log("Saved User: " + savedUser);
+            }
+        })
+    })
 }
 
 module.exports = seedDB;
