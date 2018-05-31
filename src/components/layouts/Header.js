@@ -54,7 +54,7 @@ class Header extends Component {
   logout(event){
     event.preventDefault();
     console.log('logging out');
-    axios.post('/user/logout')
+    axios.post('http://localhost:3000/user/logout')
       .then(response => {
         console.log(response.data)
         if(response.status === 200) {
