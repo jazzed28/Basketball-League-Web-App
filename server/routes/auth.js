@@ -46,7 +46,8 @@ router.post('/login',
   }
 )
 
-router.get('/', 
+router.get('/',
+  isLoggedIn,
   (req, res, next) => {
     console.log("===== user =====");
     console.log(req.user);
@@ -68,5 +69,12 @@ router.post('/logout',
     }
   }
 )
+
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+      return next();
+  }
+  res.redirect('../login');
+}
 
 module.exports = router;

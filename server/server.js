@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const logger = require('morgan');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8081;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
@@ -20,7 +20,10 @@ const seedDB = require('./seeds');
 app.use(logger('dev'));
 app.use(cors());
 
-mongoose.connect("mongodb://localhost/bball");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/bball", 
+{
+    keepAlive: true
+});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -35,7 +38,7 @@ seedDB();
 
 // PASSPORT CONFIG
 app.use(require('express-session')({
-    secret: "default-secret-key",
+    secret: process.env.SECRET_KEY || "default-secret-key",
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: false,
     saveUninitialized: false
@@ -64,7 +67,7 @@ app.get('/api', (req, res) => {
     })
 })
 
-app.get('/api/teams/:tid/players/new', (req, res) => {
+app.get('/api/teams/:tid/players/new', isLoggedIn, (req, res) => {
     Team.findById(req.params.tid, (err, foundTeam) => {
         if(err){
             console.log(err);
@@ -75,7 +78,7 @@ app.get('/api/teams/:tid/players/new', (req, res) => {
     })
 })
 
-app.get('/api/teams/:tid/players/:pid', (req, res) => {
+app.get('/api/teams/:tid/players/:pid', isLoggedIn, (req, res) => {
     Player.findById(req.params.pid, (err, foundPlayer) => {
         if(err){
             console.log(err);
@@ -96,7 +99,7 @@ app.post('/api/teams/:tid/players/new', isLoggedIn, (req, res) => {
     })
 })
 
-app.get('/api/teams/:tid/players/:pid/edit', (req, res) => {
+app.get('/api/teams/:tid/players/:pid/edit', isLoggedIn, (req, res) => {
     Player.findById(req.params.pid, (err, foundPlayer) => {
         if(err) {
             res.redirect('/api');
@@ -106,7 +109,7 @@ app.get('/api/teams/:tid/players/:pid/edit', (req, res) => {
     })
 })
 
-app.put('/api/teams/:tid', (req, res) => {
+app.put('/api/teams/:tid', isLoggedIn, (req, res) => {
     Team.findByIdAndUpdate(req.params.tid, { $set: { "players": req.body.player } }, (err, foundTeam) => {
         if(err) {
             console.log(err);
@@ -213,43 +216,43 @@ app.put('/api/teams/:tid', (req, res) => {
 
 // AUTH ROUTES
 
-app.get('/register', (req, res) => {
-    res.send("Register");
-})
+// app.get('/register', (req, res) => {
+//     res.send("Register");
+// })
 
-app.post('/register', (req, res) => {
-    console.log(req.body.username);
-    const newUser = new User(
-        {
-            username: req.body.username,
-            email: req.body.email
-        });
-    User.register(newUser, req.body.password, (err, user) => {
-        if(err){
-            return res.send("register err");
-        }
-        passport.authenticate("local")(req, res, () => {
-            res.send('success registration');
-        });
-    });
-})
+// app.post('/register', (req, res) => {
+//     console.log(req.body.username);
+//     const newUser = new User(
+//         {
+//             username: req.body.username,
+//             email: req.body.email
+//         });
+//     User.register(newUser, req.body.password, (err, user) => {
+//         if(err){
+//             return res.send("register err");
+//         }
+//         passport.authenticate("local")(req, res, () => {
+//             res.send('success registration');
+//         });
+//     });
+// })
 
-app.get('/login', (req, res) => {
-    res.send("Login");
-})
+// app.get('/login', (req, res) => {
+//     res.send("Login");
+// })
 
-app.post('/login', passport.authenticate("local", 
-    {
-        successRedirect: '/api',
-        failureRedirect: '/login'
-    }), (req, res) => {
-    res.send("Login reached");
-})
+// app.post('/login', passport.authenticate("local", 
+//     {
+//         successRedirect: '/api',
+//         failureRedirect: '/login'
+//     }), (req, res) => {
+//     res.send("Login reached");
+// })
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/api');
-})
+// app.get('/logout', (req, res) => {
+//     req.logout();
+//     res.redirect('/api');
+// })
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
@@ -259,5 +262,5 @@ function isLoggedIn(req, res, next){
 }
 
 app.listen(port, process.env.IP, () => {
-    console.log("Server has started...");
+    console.log("Server has started at: ", port);
 })
