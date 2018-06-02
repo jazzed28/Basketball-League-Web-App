@@ -11,6 +11,7 @@
   },
   "author": "Peter Son",
   "license": "ISC",
+  "proxy": "http://localhost:8081",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",

@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const path = require("path");
 const logger = require('morgan');
 const port = process.env.PORT || 8081;
 const session = require('express-session');
@@ -17,6 +18,7 @@ const Player = require('./models/Player');
 const userRoute = require('./routes/auth')
 const seedDB = require('./seeds');
 
+require("dotenv").config();
 app.use(logger('dev'));
 app.use(cors());
 
@@ -30,7 +32,8 @@ app.use(bodyParser.json());
 app.use(expressSanitizer());
 
 app.set('view engine', 'ejs');
-app.use('/src',express.static(__dirname + "/src"));
+app.use(express.static(path.join(__dirname, "client", "build")))
+// app.use('/src',express.static(__dirname + "/src"));
 app.use(methodOverride('_method'));
 
 // Remove all players and seed players
@@ -260,6 +263,10 @@ function isLoggedIn(req, res, next){
     }
     res.redirect('/login');
 }
+
+app.get("*", (req, res) => {  
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(port, process.env.IP, () => {
     console.log("Server has started at: ", port);
