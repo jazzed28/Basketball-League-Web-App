@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { Route, Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Button, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core';
+// @material-ui/icons
 import InboxIcon from '@material-ui/icons/Inbox';
+import Menu from "@material-ui/icons/Menu";
 
 const styles = theme => ({
   root: {
@@ -49,8 +51,14 @@ class Header extends Component {
   constructor(props){
     super(props);
     this.logout = this.logout.bind(this);
+    this.state = {
+      mobileOpen: false
+    };
+    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
   }
-
+  handleDrawerToggle() {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  }
   logout(event){
     event.preventDefault();
     console.log('logging out');
@@ -76,6 +84,17 @@ class Header extends Component {
     console.log('Header render, props: ');
     console.log(this.props);
 
+    const rightlink = (
+      <List className={classes.list}>
+        <ListItem button className={classes.listItem}>
+          <Link to='/league'><Button color="inherit">League</Button></Link>
+        </ListItem>
+        <ListItem button className={classes.listItem}>
+          <Link to='/contact'><Button color="inherit">Contact</Button></Link>
+        </ListItem>
+      </List>
+    );
+
     return(
       <div className={classes.root}>
         <AppBar position="static">
@@ -83,17 +102,31 @@ class Header extends Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
               Basketball
             </Typography>
-            <List className={classes.list}>
-              <ListItem button className={classes.listItem}>
-                <Link to='/league'><Button color="inherit">League</Button></Link>
-              </ListItem>
-              <ListItem button className={classes.listItem}>
-                <Link to='/contact'><Button color="inherit">Contact</Button></Link>
-              </ListItem>
-            </List>
+            <Hidden smDown implementation="css">
+              {rightlink}
+            </Hidden>
             <Link to='#' onClick={this.logout}><Button color="inherit">Logout</Button></Link>
             <Link to='/login'><Button color="inherit">Login</Button></Link>
             <Link to='/signup'><Button color="inherit">Sign Up</Button></Link>
+            <Hidden mdUp>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={this.handleDrawerToggle}
+              >
+              <Menu />
+              </IconButton>
+            </Hidden>
+            <Hidden mdUp implementation="css">
+              <Drawer
+                variant="temporary"
+                anchor={"right"}
+                open={this.state.mobileOpen}
+                onClose={this.handleDrawerToggle}
+              >
+                {rightlink}
+              </Drawer>
+            </Hidden>
           </Toolbar>
         </AppBar>
       </div>
