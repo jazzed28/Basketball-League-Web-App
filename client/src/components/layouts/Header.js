@@ -62,7 +62,7 @@ class Header extends Component {
   logout(event){
     event.preventDefault();
     console.log('logging out');
-    axios.post('http://localhost:3000/user/logout')
+    axios.post('/user/logout')
       .then(response => {
         console.log(response.data)
         if(response.status === 200) {
@@ -87,10 +87,10 @@ class Header extends Component {
     const rightlink = (
       <List className={classes.list}>
         <ListItem button className={classes.listItem}>
-          <Link to='/league'><Button color="inherit">League</Button></Link>
+          <Link to='/#'><Button color="inherit">League</Button></Link>
         </ListItem>
         <ListItem button className={classes.listItem}>
-          <Link to='/contact'><Button color="inherit">Contact</Button></Link>
+          <Link to='/#'><Button color="inherit">Contact</Button></Link>
         </ListItem>
       </List>
     );
