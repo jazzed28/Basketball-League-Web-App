@@ -16,6 +16,7 @@ import axios from 'axios';
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    fontFamily: theme.typography.fontFamily,
   },
   container: {
     paddingRight: "15px",
@@ -36,14 +37,51 @@ const styles = theme => ({
       maxWidth: "1140px"
     }
   },
+  cardHeader: {
+    boxShadow:
+    "0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2)",
+    color: "#fff",
+    background: "linear-gradient(60deg, #D59300, #FF9300)",
+    width: "10rem",
+    height: "10rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "Center",
+    textAlign: "center",
+    borderRadius: "10rem",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "-5rem",
+    padding: "20px 0",
+    marginBottom: "15px",
+  },
+  cardContent: {
+    padding: "0.9375rem 1.875rem",
+    flex: "1 1 auto"
+  },
   paper: {
     padding: theme.spacing.unit * 2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
   card: {
-    minWidth: 320,
-    marginTop: "40px",
+    overflow: "visible",
+    border: "0",
+    marginBottom: "30px",
+    marginTop: "6rem",
+    borderRadius: "6px",
+    color: "rgba(0, 0, 0, 0.87)",
+    background: "#fff",
+    width: "100%",
+    boxShadow:
+      "0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)",
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    minWidth: "0",
+    wordWrap: "break-word",
+    fontSize: ".875rem",
+    transition: "all 300ms linear",
   },
   form: {
     margin: "0"
@@ -51,7 +89,8 @@ const styles = theme => ({
   title: {
     marginBottom: 16,
     fontSize: 14,
-    textAlign: "center"
+    textAlign: "center",
+    textTransform: "uppercase"
   },
   pos: {
     marginBottom: 12,
@@ -125,9 +164,11 @@ class Login extends Component {
                   {/* <Paper className={classes.paper}>xs=12</Paper> */}
                   <Card className={classes.card}>
                     <form className={classes.form}>
-                      <h4 className={classes.title}>MEMBER ADMIN</h4>
-                      <p className={classes.divider}>Or Be Classical</p>
-                      <CardContent>
+                      <div className={classes.cardHeader}>
+                        <h4 className={classes.title}>Come on in!</h4>
+                      </div>
+                      <p className={classes.divider}>Your basketball league</p>
+                      <CardContent className={classes.cardContent}>
                         <Grid container spacing={8} alignItems="flex-end">
                           <Grid item>
                             <People />

@@ -5,12 +5,12 @@ import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core';
 // @material-ui/icons
-import InboxIcon from '@material-ui/icons/Inbox';
 import Menu from "@material-ui/icons/Menu";
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    fontFamily: theme.typography.fontFamily
   },
   flex: {
     flex: 1,

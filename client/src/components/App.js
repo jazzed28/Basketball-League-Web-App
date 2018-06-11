@@ -23,6 +23,9 @@ const theme = createMuiTheme({
       contrastText: '#000',
     },
   },
+  typography: {
+    fontFamily: "Roboto"
+  }
 });
 
 class App extends Component {
