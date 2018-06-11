@@ -7,7 +7,7 @@ import Email from "@material-ui/icons/Email";
 import LockOutline from "@material-ui/icons/LockOutline";
 import People from "@material-ui/icons/People";
 import { Card, CardActions, CardContent } from '@material-ui/core';
-import { TextField, Button } from '@material-ui/core';
+import { FormControl, InputLabel, Input, InputAdornment, TextField, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -59,6 +59,13 @@ const styles = theme => ({
     padding: "0.9375rem 1.875rem",
     flex: "1 1 auto"
   },
+  cardActions: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+    padding: "0.9375rem 1.875rem"
+  },
   paper: {
     padding: theme.spacing.unit * 2,
     textAlign: 'center',
@@ -68,7 +75,8 @@ const styles = theme => ({
     overflow: "visible",
     border: "0",
     marginBottom: "30px",
-    marginTop: "6rem",
+    marginTop: "8rem",
+    paddingBottom: "30px",
     borderRadius: "6px",
     color: "rgba(0, 0, 0, 0.87)",
     background: "#fff",
@@ -83,12 +91,17 @@ const styles = theme => ({
     fontSize: ".875rem",
     transition: "all 300ms linear",
   },
+  formControl: {
+    paddingBottom: "7px",
+    margin: "11px 0 0 0",
+    position: "relative"
+  },
   form: {
     margin: "0"
   },
   title: {
     marginBottom: 16,
-    fontSize: 14,
+    fontSize: 18,
     textAlign: "center",
     textTransform: "uppercase"
   },
@@ -165,29 +178,28 @@ class Login extends Component {
                   <Card className={classes.card}>
                     <form className={classes.form}>
                       <div className={classes.cardHeader}>
-                        <h4 className={classes.title}>Come on in!</h4>
+                        <h4 className={classes.title}>You in?</h4>
                       </div>
-                      <p className={classes.divider}>Your basketball league</p>
+                      <p className={classes.divider}>League management</p>
                       <CardContent className={classes.cardContent}>
-                        <Grid container spacing={8} alignItems="flex-end">
-                          <Grid item>
-                            <People />
-                          </Grid>
-                          <Grid item>
-                            <TextField id="input-with-icon-grid" label="With a grid" />
-                          </Grid>
-                        </Grid>
-                        
-                        <Typography className={classes.pos} color="textSecondary">
-                          adjective
-                        </Typography>
-                        <Typography component="p">
-                          well meaning and kindly.<br />
-                          {'"a benevolent smile"'}
-                        </Typography>
+                        <FormControl fullWidth className={classes.formControl}>
+                          <InputLabel htmlFor="adornment-email">Email or username</InputLabel>
+                          <Input
+                            id="adornment-email"
+                            endAdornment={<InputAdornment position="end"><Email /></InputAdornment>}
+                          />
+                        </FormControl>
+                        <FormControl fullWidth className={classes.formControl}>
+                          <InputLabel htmlFor="adornment-email">Password</InputLabel>
+                          <Input
+                            id="adornment-email"
+                            type="password"
+                            endAdornment={<InputAdornment position="end"><LockOutline /></InputAdornment>}
+                          />
+                        </FormControl>
                       </CardContent>
-                      <CardActions>
-                        <Button color="primary" size="large">
+                      <CardActions className={classes.cardActions}>
+                        <Button variant="outlined" color="primary" size="large">
                           Login
                         </Button>
                       </CardActions>
