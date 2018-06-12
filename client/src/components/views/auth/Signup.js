@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios'
 
@@ -35,8 +36,8 @@ class Signup extends Component {
 				console.log("Response: ", response)
 				if (!response.data.errmsg) {
 					console.log('successful signup')
-					this.setState({ //redirect to login page
-						redirectTo: '/league'
+					this.setState({ //redirect to home page
+						redirectTo: '/'
 					})
 				} else {
 					console.log('username already taken')
@@ -98,6 +99,10 @@ class Signup extends Component {
 			);
 		}
 	}
+}
+
+Signup.propTypes = {
+  classes: PropTypes.object.isRequired,
 }
 
 export default Signup;

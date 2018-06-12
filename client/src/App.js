@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import CSSBaseline from '@material-ui/core/CssBaseline';
-import { Header, Footer, Pages } from './layouts';
+import { Header, Footer, Home } from './components/views';
 import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 
-import Signup from './auth/Signup';
-import Login from './auth/Login';
+import Signup from './components/views/auth/Signup';
+import Login from './components/views/auth/Login';
 
 const theme = createMuiTheme({
   palette: {
@@ -85,16 +85,12 @@ class App extends Component {
               render={() => <Signup signup={this.signup} />} 
             />
             <Route 
-              path='/league' 
-              component={Pages} 
+              exact
+              path='/' 
+              component={Home} 
             />
             <Route 
               path='/contact'
-            />
-            <Route 
-              exact 
-              path='/' 
-              render={() => <Redirect to='/league' />} 
             />
           </Switch>
           <Footer/>

@@ -6,46 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, Hidden, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core';
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    fontFamily: theme.typography.fontFamily
-  },
-  flex: {
-    flex: 1,
-  },
-  list: {
-    fontFamily: theme.typography.fontFamily,
-    fontSize: "14px",
-    margin: 0,
-    paddingLeft: "0",
-    listStyle: "none",
-    paddingTop: "0",
-    paddingBottom: "0",
-    color: "inherit"
-  },
-  listItem: {
-    float: "left",
-    color: "inherit",
-    position: "relative",
-    display: "block",
-    width: "auto",
-    marginLeft: "15px",
-    padding: "0",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      "&:after": {
-        width: "calc(100% - 30px)",
-        content: '""',
-        display: "block",
-        height: "1px",
-        marginLeft: "15px",
-        backgroundColor: "#e5e5e5"
-      }
-    }
-  },
-});
+import headerStyle from '../../assets/jss/headerStyle';
 
 class Header extends Component {
   constructor(props){
@@ -132,7 +93,12 @@ class Header extends Component {
       </div>
     )
   }
-  
 }
 
-export default withStyles(styles)(Header);
+Header.propTypes = {
+  classes: PropTypes.object.isRequired,
+  logout: PropTypes.func,
+  handleDrawerToggle: PropTypes.func,
+}
+
+export default withStyles(headerStyle)(Header);

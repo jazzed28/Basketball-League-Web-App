@@ -1,7 +1,7 @@
 import Header from './Header';
 import Footer from './Footer';
-import Pages from './Pages';
+import Home from './Home';
 
 export {
-  Header, Footer, Pages
+  Header, Footer, Home
 }
