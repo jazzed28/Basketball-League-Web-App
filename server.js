@@ -65,7 +65,8 @@ app.get('/api', (req, res) => {
             console.log(err);
         } else {
             console.log(foundTeam.players);
-            res.render("apihome", {team: foundTeam});
+            //res.render("apihome", {team: foundTeam});
+            res.json(foundTeam);
         }
     })
 })

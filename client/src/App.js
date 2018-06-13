@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import CSSBaseline from '@material-ui/core/CssBaseline';
-import { Header, Footer, Home } from './components/views';
 import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 
+import { Header, Footer, Home, Roster } from './components/views';
 import Signup from './components/views/auth/Signup';
 import Login from './components/views/auth/Login';
 
@@ -20,7 +20,7 @@ const theme = createMuiTheme({
       light: '#ffe54c',
       main: '#ffb300',
       dark: '#c68400',
-      contrastText: '#000',
+      contrastText: '#fff',
     },
   },
   typography: {
@@ -77,6 +77,11 @@ class App extends Component {
           <Header updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
           <Switch>
             <Route 
+              exact
+              path='/' 
+              component={Home} 
+            />
+            <Route 
               path='/login' 
               render={() => <Login updateUser={this.updateUser} />} 
             />
@@ -85,12 +90,11 @@ class App extends Component {
               render={() => <Signup signup={this.signup} />} 
             />
             <Route 
-              exact
-              path='/' 
-              component={Home} 
-            />
-            <Route 
               path='/contact'
+            />
+            <Route
+              path='/roster'
+              component={Roster}
             />
           </Switch>
           <Footer/>

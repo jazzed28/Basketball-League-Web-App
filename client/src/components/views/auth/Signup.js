@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios'
 
 class Signup extends Component {
-	constructor(props) {
-		super(props)
+	constructor() {
+		super();
 		this.state = {
 			username: '',
 			password: '',
@@ -99,10 +98,6 @@ class Signup extends Component {
 			);
 		}
 	}
-}
-
-Signup.propTypes = {
-  classes: PropTypes.object.isRequired,
 }
 
 export default Signup;

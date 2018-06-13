@@ -9,8 +9,8 @@ import Menu from "@material-ui/icons/Menu";
 import headerStyle from '../../assets/jss/headerStyle';
 
 class Header extends Component {
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
     this.logout = this.logout.bind(this);
     this.state = {
       mobileOpen: false
@@ -66,7 +66,8 @@ class Header extends Component {
             <Hidden smDown implementation="css">
               {rightlink}
             </Hidden>
-            <Link to='#' onClick={this.logout}><Button color="inherit">Logout</Button></Link>
+            <Link to='/roster'><Button color="inherit">Roster</Button></Link>
+            <Link to='/#' onClick={this.logout}><Button color="inherit">Logout</Button></Link>
             <Link to='/login'><Button color="inherit">Login</Button></Link>
             <Link to='/signup'><Button color="inherit">Sign Up</Button></Link>
             <Hidden mdUp>
