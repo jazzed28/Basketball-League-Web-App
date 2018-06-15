@@ -153,7 +153,10 @@ var rosterData = [
 ]
 
 const initailState = {
-  players: rosterData
+  teamid: "",
+  teamname: "OBAR",
+  players: rosterData,
+  note: ""
 };
 
 class Roster extends Component {
@@ -162,6 +165,27 @@ class Roster extends Component {
     this.state = initailState;
     //this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeNote = this.handleChangeNote.bind(this);
+  }
+
+  componentDidMount(){
+    axios.get(`/api/teams/${this.state.teamname}`)
+    .then((response) => {
+      console.log("get response: ");
+      console.log(response.data);
+      if(response.status === 200){
+        // update the state to redirect to home
+        this.setState({
+          teamid: response.data._id,
+          teamname: response.data.teamname,
+          players: response.data.players,
+          note: response.data.note
+        })
+      }
+    }).catch(err => {
+      console.log("get error: ");
+      console.log(err);
+    })
   }
 
   handleChange(i, event){
@@ -173,24 +197,21 @@ class Roster extends Component {
     })
   }
 
+  handleChangeNote(event){
+    console.log("NOTE CHANGING");
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     console.log("Submitted");
-
-    axios.get('/api')
-    .then((response) => {
-      console.log("get response: ");
-      console.log(response.data.players);
-      if(response.status === 200){
-        // update the state to redirect to home
-        this.setState({
-          players: response.data.players
+    axios.put(`/api/teams/${this.state.teamid}`, 
+        { players: this.state.players })
+        .then((response) => {
+          console.log("Saved successfully", response);
         })
-      }
-    }).catch(err => {
-      console.log("get error: ");
-      console.log(err);
-    })
   }
 
   render(){
@@ -201,7 +222,7 @@ class Roster extends Component {
       <div className={classes.container}>
         <form onSubmit={this.handleSubmit}>
           <Grid className={classes.gridContainer} container justify="space-between" alignItems="center">
-            <Grid item ><h2>TEAM NAME</h2></Grid>
+            <Grid item ><h2>{this.state.teamname}</h2></Grid>
             <Grid item >
               <Button type="submit" variant="raised" color="secondary" size="large">
                 Submit
@@ -304,6 +325,9 @@ class Roster extends Component {
                 multiline
                 rows="4"
                 placeholder="Please make a note here"
+                name="note"
+                value={this.state.note}
+                onChange={this.handleChangeNote}
                 className={classes.textField}
                 margin="normal"
               />

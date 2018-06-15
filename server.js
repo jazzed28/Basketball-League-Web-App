@@ -59,8 +59,8 @@ app.get('/', (req, res) => {
     res.render("landing");
 });
 
-app.get('/api', (req, res) => {
-    Team.findOne({teamname: "OBAR"}, (err, foundTeam) => {
+app.get('/api/teams/:tid', (req, res) => {
+    Team.findOne({teamname: req.params.tid}, (err, foundTeam) => {
         if(err){
             console.log(err);
         } else {
@@ -113,10 +113,11 @@ app.get('/api/teams/:tid/players/:pid/edit', isLoggedIn, (req, res) => {
     })
 })
 
-app.put('/api/teams/:tid', isLoggedIn, (req, res) => {
-    Team.findByIdAndUpdate(req.params.tid, { $set: { "players": req.body.player } }, (err, foundTeam) => {
+app.put('/api/teams/:tid', (req, res) => {
+    console.log("server received players arr: ", req.body.players)
+    Team.findByIdAndUpdate(req.params.tid, { $set: { "players": req.body.players } }, (err, foundTeam) => {
         if(err) {
-            console.log(err);
+            console.log("mongo database updating errors:", err);
         } else {
             console.log("--------------");
             console.log(foundTeam.players);
@@ -159,8 +160,7 @@ app.put('/api/teams/:tid', isLoggedIn, (req, res) => {
             //         }
             //     })
             // }
-
-             res.redirect('/api');
+            res.redirect(303, '/roster')
 
             // inputPlayers.forEach((each) => {
             //     // Player.findByIdAndUpdate()
