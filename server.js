@@ -60,11 +60,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/teams/:tid', (req, res) => {
-    Team.findOne({teamname: req.params.tid}, (err, foundTeam) => {
+    Team.findOne({ teamname: req.params.tid}, (err, foundTeam) => {
         if(err){
             console.log(err);
         } else {
-            console.log(foundTeam.players);
+            console.log(foundTeam);
             //res.render("apihome", {team: foundTeam});
             res.json(foundTeam);
         }
@@ -160,7 +160,7 @@ app.put('/api/teams/:tid', (req, res) => {
             //         }
             //     })
             // }
-            res.redirect(303, '/roster')
+            //res.redirect('/')
 
             // inputPlayers.forEach((each) => {
             //     // Player.findByIdAndUpdate()
@@ -260,9 +260,11 @@ app.put('/api/teams/:tid', (req, res) => {
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
+        console.log("login success! move to next");
         return next();
     }
-    res.redirect('/login');
+    console.log("login failed!!");
+    res.redirect(303, '/login')
 }
 
 app.get("*", (req, res) => {  
