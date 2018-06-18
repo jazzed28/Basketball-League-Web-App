@@ -113,7 +113,7 @@ app.get('/api/teams/:tid/players/:pid/edit', isLoggedIn, (req, res) => {
     })
 })
 
-app.put('/api/teams/:tid', (req, res) => {
+app.put('/api/teams/:tid', isLoggedIn, (req, res) => {
     console.log("server received players arr: ", req.body.players)
     Team.findByIdAndUpdate(req.params.tid, { $set: { "players": req.body.players } }, (err, foundTeam) => {
         if(err) {
@@ -160,6 +160,11 @@ app.put('/api/teams/:tid', (req, res) => {
             //         }
             //     })
             // }
+            // console.log('ready to redirect') //Here, the response has a status "0k"
+            // return res.status(200).json({
+            //     success:true,
+            //     redirectUrl: '/'
+            // })
             //res.redirect('/')
 
             // inputPlayers.forEach((each) => {
@@ -264,7 +269,12 @@ function isLoggedIn(req, res, next){
         return next();
     }
     console.log("login failed!!");
-    res.redirect(303, '/login')
+    console.log('ready to redirect') //Here, the response has a status "0k"
+    return res.status(200).json({
+        loginSuccess: false,
+        redirectUrl: '/login'
+    })
+    //res.redirect(303, '/login')
 }
 
 app.get("*", (req, res) => {  

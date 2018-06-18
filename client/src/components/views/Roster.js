@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableRow, Input, TextField, Paper, Grid, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -209,8 +210,14 @@ class Roster extends Component {
     console.log("Submitted");
     axios.put(`/api/teams/${this.state.teamid}`, 
         { players: this.state.players })
-        .then((response) => {
-          console.log("Saved successfully", response);
+        .then((res) => {
+          if (!res.data.loginSuccess) {
+            console.log("front login failed");
+            this.props.history.push(res.data.redirectUrl);
+          } else {
+            console.log("Saved successfully", res);
+            this.props.history.push('/roster');
+          }
         })
   }
 
@@ -351,4 +358,4 @@ Roster.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Roster);
+export default withRouter(withStyles(styles)(Roster));
