@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Header, Footer, Home, Roster } from './components/views';
 import Signup from './components/views/auth/Signup';
 import Login from './components/views/auth/Login';
+import PrivateRoute from './routes/PrivateRoute';
 
 const theme = createMuiTheme({
   palette: {
@@ -52,7 +53,7 @@ class App extends Component {
   getUser(){
     axios.get('/user').then(response => {
       console.log('Get user response: ');
-      console.log(response.data);
+      console.log("get response", response.data);
       if(response.data.user){
         console.log('Get User: There is a user saved in the server session: ');
         this.setState({
@@ -92,9 +93,10 @@ class App extends Component {
             <Route 
               path='/contact'
             />
-            <Route
+            <PrivateRoute
               path='/roster'
               component={Roster}
+              loggedIn={this.state.loggedIn}
             />
           </Switch>
           <Footer/>

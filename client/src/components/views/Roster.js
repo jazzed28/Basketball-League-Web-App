@@ -208,7 +208,7 @@ class Roster extends Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log("Submitted");
-    axios.put(`/api/teams/${this.state.teamid}`, 
+    axios.put(`/api/teams/${this.state.teamid}`,
         { players: this.state.players })
         .then((res) => {
           if (!res.data.loginSuccess) {
