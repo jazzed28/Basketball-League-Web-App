@@ -113,7 +113,7 @@ app.get('/api/teams/:tid/players/:pid/edit', isLoggedIn, (req, res) => {
     })
 })
 
-app.put('/api/teams/:tid', isLoggedIn, (req, res) => {
+app.put('/api/teams/:tid', (req, res) => {
     console.log("server received players arr: ", req.body.players)
     Team.findByIdAndUpdate(req.params.tid, { $set: { "players": req.body.players } }, (err, foundTeam) => {
         if(err) {
