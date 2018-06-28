@@ -35,6 +35,8 @@ After watching youtube preparation for web projects I should follow guidelines t
 
 * User (User_ID, Team_Ref, Username, Email, Password)
 
+- There will be roles including admin and team captains
+
 ## 2. REST APIs - GET, POST, PUT, DELETE
 
 Basic APIs for create, update, delete player's data
