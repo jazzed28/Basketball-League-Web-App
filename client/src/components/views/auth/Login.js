@@ -45,10 +45,12 @@ class Login extends Component {
       console.log(response);
       if(response.status === 200){
         // update App.js state
-        this.props.updateUser({
-          loggedIn: true,
-          username: response.data.username
-        })
+        // this.props.updateUser({
+        //   loggedIn: true,
+        //   username: response.data.username
+        // })
+        localStorage.setItem('usernmae', response.data.username);
+        localStorage.setItem('jwtToken', response.data.token);
         // update the state to redirect to home
         this.setState({
           redirectTo: '/'
@@ -84,6 +86,9 @@ class Login extends Component {
                           <InputLabel htmlFor="adornment-email">Email</InputLabel>
                           <Input
                             id="adornment-email"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.handleChange}
                             endAdornment={<InputAdornment position="end"><Email /></InputAdornment>}
                           />
                         </FormControl>
@@ -92,12 +97,19 @@ class Login extends Component {
                           <Input
                             id="adornment-password"
                             type="password"
+                            name="password"
+                            value={this.state.password}
+                            onChange={this.handleChange}
                             endAdornment={<InputAdornment position="end"><LockOutline /></InputAdornment>}
                           />
                         </FormControl>
                       </CardContent>
                       <CardActions className={classes.cardActions}>
-                        <Button variant="outlined" color="primary" size="large">
+                        <Button 
+                          variant="outlined" 
+                          color="primary" 
+                          size="large"
+                          onClick={this.handleSubmit}>
                           Login
                         </Button>
                       </CardActions>
@@ -107,46 +119,6 @@ class Login extends Component {
               </Grid>
             </div>
           </div>
-          <h4>Login</h4>
-          <form className="form-horizontal">
-            <div className="form-group">
-                <div className="col-1 col-ml-auto">
-                    <label className="form-label" htmlFor="username">Username</label>
-                </div>
-                <div className="col-3 col-mr-auto">
-                    <input className="form-input"
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Username"
-                        value={this.state.username}
-                        onChange={this.handleChange}
-                    />
-                </div>
-            </div>
-            <div className="form-group">
-                <div className="col-1 col-ml-auto">
-                    <label className="form-label" htmlFor="password">Password: </label>
-                </div>
-                <div className="col-3 col-mr-auto">
-                    <input className="form-input"
-                        placeholder="password"
-                        type="password"
-                        name="password"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                    />
-                </div>
-            </div>
-            <div className="form-group ">
-                <div className="col-7"></div>
-                <button
-                    className="btn btn-primary col-1 col-mr-auto"
-                  
-                    onClick={this.handleSubmit}
-                    type="submit">Login</button>
-            </div>
-          </form>
         </Fragment>
       )
     }         

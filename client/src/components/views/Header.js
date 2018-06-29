@@ -23,24 +23,25 @@ class Header extends Component {
   logout(event){
     event.preventDefault();
     console.log('logging out');
-    axios.post('/user/logout')
-      .then(response => {
-        console.log(response.data)
-        if(response.status === 200) {
-          this.props.updateUser({
-            loggedIn: false,
-            username: null
-          })
-        }
-      })
-      .catch(err => {
-        console.log("Logout error", err);
-      });
+    localStorage.removeItem('jwtToken');
+    window.location.reload();
+    // axios.post('/user/logout')
+    //   .then(response => {
+    //     console.log(response.data)
+    //     if(response.status === 200) {
+    //       this.props.updateUser({
+    //         loggedIn: false,
+    //         username: null
+    //       })
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log("Logout error", err);
+    //   });
   }
 
   render(){
     const { classes } = this.props;
-    const loggedIn = this.props.loggedIn;
 
     console.log('Header render, props: ');
     console.log(this.props);

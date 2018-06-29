@@ -1,10 +1,21 @@
+const passport = require('passport');
+const settings = require('../passport/settings');
+require('../passport/passport')(passport);
+const jwt = require('jsonwebtoken');
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const passport = require('../passport');
+// const passport = require('../passport');
 
-router.post('/', 
+router.post('/register', 
   (req, res) => {
+    if(!req.body.username || !req.body.password) {
+      res.json({
+        success: false,
+        msg: 'Please pass username and password.'
+      })
+    }
     console.log("User signup");
     const { username, password } = req.body;
 
@@ -36,13 +47,40 @@ router.post('/login',
     console.log(req.body);
     next();
   },
-  passport.authenticate('local'),
+  // passport.authenticate('local'),
   (req, res) => {
-    console.log("logged in", req.user);
-    var userInfo = {
-      username: req.user.username
-    };
-    res.send(userInfo);
+    // console.log("logged in", req.user);
+    // var userInfo = {
+    //   username: req.user.username
+    // };
+    // res.send(userInfo);
+
+    User.findOne({
+      username: req.body.username
+    }, (err, user) => {
+      if(err) throw err;
+
+      if(!user){
+        res.status(401).send({
+          success: false, 
+          msg: 'Authentication failed. User not found.'
+        })
+      } else {
+        console.log("just before comparing pw");
+        if(user.comparePassword(req.body.password)) {
+          var token = jwt.sign(user.toJSON(), settings.secret);
+          res.json({
+            success: true,
+            token: 'JWT ' + token
+          });
+        } else {
+          res.status(401).send({
+            success: false,
+            msg: 'Authentication failed. Wrong password.'
+          })
+        }
+      }
+    })
   }
 )
 

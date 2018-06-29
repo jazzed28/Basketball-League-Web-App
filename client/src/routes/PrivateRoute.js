@@ -1,10 +1,9 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-const PrivateRoute = ({ component: Component, loggedIn: loggedIn, ...rest }) => {
-  console.log("wow", loggedIn);
+const PrivateRoute = ({ component: Component, ...rest }) => {
   return <Route {...rest} render={(props) => (
-    loggedIn === true
+    localStorage.getItem('jwtToken')
       ? <Component {...props} />
       : <Redirect to='/login' />
   )} />

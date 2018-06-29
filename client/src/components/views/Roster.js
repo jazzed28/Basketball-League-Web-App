@@ -170,6 +170,7 @@ class Roster extends Component {
   }
 
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
     axios.get(`/api/teams/${this.state.teamname}`)
         .then((response) => {
           console.log("get response: ");
@@ -211,13 +212,13 @@ class Roster extends Component {
     axios.put(`/api/teams/${this.state.teamid}`,
         { players: this.state.players })
         .then((res) => {
-          if (!res.data.loginSuccess) {
-            console.log("front login failed");
-            this.props.history.push(res.data.redirectUrl);
-          } else {
+          // if (!res.data.loginSuccess) {
+          //   console.log("front login failed");
+          //   this.props.history.push(res.data.redirectUrl);
+          // } else {
             console.log("Saved successfully", res);
             this.props.history.push('/roster');
-          }
+          // }
         })
   }
 

@@ -39,35 +39,49 @@ class App extends Component {
 
     this.getUser = this.getUser.bind(this);
     // this.componentDidMount = this.componentDidMount.bind(this); // ?
-    this.updateUser = this.updateUser.bind(this);
+    // this.updateUser = this.updateUser.bind(this);
   }
 
   componentDidMount(){
     this.getUser();
   }
 
-  updateUser(userObject){
-    this.setState(userObject);
-  }
+  // updateUser(userObject){
+  //   this.setState(userObject);
+  // }
 
   getUser(){
-    axios.get('/user').then(response => {
-      console.log('Get user response: ');
-      console.log("get response", response.data);
-      if(response.data.user){
-        console.log('Get User: There is a user saved in the server session: ');
-        this.setState({
-          loggedIn: true,
-          username: response.data.user.username
-        })
-      } else {
-        console.log('Get user: no user');
-        this.setState({
-          loggedIn: false,
-          username: null
-        })
-      }
-    })
+    let jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+      console.log('Get User: There is a username saved in the localStorage: ');
+      this.setState({
+        loggedIn: true,
+        username: localStorage.getItem('username')
+      })
+    } else {
+      console.log('Get user: no user');
+      this.setState({
+        loggedIn: false,
+        username: null
+      })
+    }
+    // axios.get('/user').then(response => {
+    //   console.log('Get user response: ');
+    //   console.log("get response", response.data);
+    //   if(response.data.user){
+    //     console.log('Get User: There is a user saved in the server session: ');
+    //     this.setState({
+    //       loggedIn: true,
+    //       username: response.data.user.username
+    //     })
+    //   } else {
+    //     console.log('Get user: no user');
+    //     this.setState({
+    //       loggedIn: false,
+    //       username: null
+    //     })
+    //   }
+    // })
   }
   
   render(){
@@ -75,7 +89,7 @@ class App extends Component {
       <Fragment>
         <CSSBaseline />
         <MuiThemeProvider theme={theme}>
-          <Header updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
+          <Header />
           <Switch>
             <Route 
               exact
@@ -84,7 +98,7 @@ class App extends Component {
             />
             <Route 
               path='/login' 
-              render={() => <Login updateUser={this.updateUser} />} 
+              render={() => <Login />} 
             />
             <Route 
               path='/signup' 
@@ -96,7 +110,6 @@ class App extends Component {
             <PrivateRoute
               path='/roster'
               component={Roster}
-              loggedIn={this.state.loggedIn}
             />
           </Switch>
           <Footer/>

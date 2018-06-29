@@ -12,6 +12,7 @@ mongoose.Promise = global.Promise;
 const MongoStore = require('connect-mongo')(session);
 const expressSanitizer = require('express-sanitizer');
 const passport = require('passport');
+require('./passport/passport')(passport);
 const User = require('./models/User');
 const Team = require('./models/Team');
 const Player = require('./models/Player');
@@ -46,8 +47,8 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 // passport.use(new LocalStrategy(User.authenticate()));
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());
@@ -59,16 +60,36 @@ app.get('/', (req, res) => {
     res.render("landing");
 });
 
-app.get('/api/teams/:tid', (req, res) => {
-    Team.findOne({ teamname: req.params.tid}, (err, foundTeam) => {
-        if(err){
-            console.log(err);
+getToken = function (headers) {
+    if (headers && headers.authorization) {
+        var parted = headers.authorization.split(' ');
+        if (parted.length === 2) {
+        return parted[1];
         } else {
-            console.log(foundTeam);
-            //res.render("apihome", {team: foundTeam});
-            res.json(foundTeam);
+        return null;
         }
-    })
+    } else {
+        return null;
+    }
+};
+
+app.get('/api/teams/:tid', passport.authenticate('jwt', { session: false }), (req, res) => {
+    var token = getToken(req.headers);
+    if(token) {
+        // login confirmed
+        console.log("Checked logged in status")
+        Team.findOne({ teamname: req.params.tid}, (err, foundTeam) => {
+            if(err){
+                console.log(err);
+            } else {
+                console.log(foundTeam);
+                //res.render("apihome", {team: foundTeam});
+                res.json(foundTeam);
+            }
+        })
+    } else {
+        return res.status(403).send({success: false, msg: 'Unauthorized.'});
+    }
 })
 
 app.get('/api/teams/:tid/players/new', isLoggedIn, (req, res) => {

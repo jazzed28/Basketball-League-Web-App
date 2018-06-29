@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
 
 // Define schema methods
 UserSchema.methods = {
-    checkPassword: function(inputPassword) {
+    comparePassword: function(inputPassword) {
         return bcrypt.compareSync(inputPassword, this.password);
     },
     hashPassword: function(textPassword) {
