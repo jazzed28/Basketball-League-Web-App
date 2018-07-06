@@ -16,7 +16,8 @@ require('./passport/passport')(passport);
 const User = require('./models/User');
 const Team = require('./models/Team');
 const Player = require('./models/Player');
-const userRoute = require('./routes/auth')
+const userRoute = require('./routes/auth');
+const apiRoute = require('./routes/api');
 const seedDB = require('./seeds');
 
 require("dotenv").config();
@@ -55,6 +56,7 @@ app.use(require('express-session')({
 
 // Routes
 app.use('/user', userRoute)
+app.use('/api', apiRute)
 
 app.get('/', (req, res) => {
     res.render("landing");
